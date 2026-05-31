@@ -5,6 +5,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryUtil;
 
 public final class DisplayManager {
@@ -12,7 +14,8 @@ public final class DisplayManager {
     private String TITLE = "APP";
     private int WIDTH = 300;
     private int HEIGHT = 200;
-    
+    private boolean isVSyncEnabled = true;
+
     // long memory address (pointer) to track windows
     private static long window;
     private static DisplayManager instance = null;
@@ -28,7 +31,7 @@ public final class DisplayManager {
         return instance;
     }
 
-    public void createDisplay() {
+   public void createDisplay() {
         if (!GLFW.glfwInit()) {
             throw new IllegalStateException("Unable to initialize GLFW");
         }
@@ -37,10 +40,20 @@ public final class DisplayManager {
         if (window == MemoryUtil.NULL) {
             throw new RuntimeException("Failed to create the GLFW window");
         }
-        // Window Position
-        centerDisplay();
         // Make the OpenGL context current
         GLFW.glfwMakeContextCurrent(window);
+        // Initialize OpenGL capabilities
+        GL.createCapabilities();
+        // ====BELOW ==== Is Safe to call OpenGL functions
+        centerDisplay(); // Window Position
+        // Configure OpenGL for 3D
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11.glCullFace(GL11.GL_BACK);
+        // Set clear color
+        GL11.glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        //VSync
+        GLFW.glfwSwapInterval(isVSyncEnabled?1:0);
     }
 
     // Updates display by swapping buffers and polling input events
@@ -59,6 +72,10 @@ public final class DisplayManager {
         GLFW.glfwDestroyWindow(window);
         GLFW.glfwTerminate();
     }
+
+    public int getWidth() { return WIDTH; }
+    public int getHeight() { return HEIGHT; }
+    public long getWindow() { return window; }
 
     // Moves the Window to the Center of the Screen.
     public void centerDisplay(){

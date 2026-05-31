@@ -4,12 +4,13 @@ public class Main {
 
     static void main(String[] args) {
         System.out.println("LWJGL Version: "+ Version.getVersion());
+        DisplayManager display = DisplayManager.get();
 
-        DisplayManager.get().createDisplay();
-        while (!DisplayManager.get().isClosed()) {
-            DisplayManager.get().updateDisplay();
+        display.createDisplay();
+        while (!display.isClosed()) {
+            display.updateDisplay();
         }
-        DisplayManager.get().closeDisplay();
+        display.closeDisplay();
     }
     
 }
