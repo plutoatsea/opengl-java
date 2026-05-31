@@ -1,19 +1,24 @@
+import java.io.File;
+import org.w3c.dom.Document;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.system.MemoryUtil;
 
 public final class DisplayManager {
-
-    private static int WIDTH;
-    private static int HEIGHT;
-    private static final String TITLE = "APP";
-    private static DisplayManager instance = null;
+    // Default Values
+    private String TITLE = "APP";
+    private int WIDTH = 300;
+    private int HEIGHT = 200;
     
     // long memory address (pointer) to track windows
     private static long window;
+    private static DisplayManager instance = null;
 
     private DisplayManager(){
-        WIDTH = 1280; HEIGHT = 720;
+        configureDisplay();
     }
 
     public static DisplayManager get(){
@@ -38,18 +43,6 @@ public final class DisplayManager {
         GLFW.glfwMakeContextCurrent(window);
     }
 
-    // Moves the Window to the Center of the Screen.
-    public void centerDisplay(){
-        GLFWVidMode vidmode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
-        if (vidmode != null) {
-            GLFW.glfwSetWindowPos(
-                window,
-                (vidmode.width() - WIDTH) / 2,
-                (vidmode.height() - HEIGHT) / 2
-            );
-        }
-    }
-
     // Updates display by swapping buffers and polling input events
     public void updateDisplay() {
         GLFW.glfwSwapBuffers(window);
@@ -65,5 +58,76 @@ public final class DisplayManager {
     public void closeDisplay() {
         GLFW.glfwDestroyWindow(window);
         GLFW.glfwTerminate();
+    }
+
+    // Moves the Window to the Center of the Screen.
+    public void centerDisplay(){
+        GLFWVidMode vidmode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
+        if (vidmode != null) {
+            GLFW.glfwSetWindowPos(
+                window,
+                (vidmode.width() - WIDTH) / 2,
+                (vidmode.height() - HEIGHT) / 2
+            );
+        }
+    }
+
+    // Parses XML Data to Configure Window
+    private void configureDisplay(){
+        try {
+            File xmlFile = new File("./config/config.xml");
+            if (!xmlFile.exists()) {
+                System.out.println("config.xml not found, using default display settings");
+                return;
+            }
+            
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(xmlFile);
+            doc.getDocumentElement().normalize();
+            
+            var titleNode = doc.getElementsByTagName("title").item(0);
+            if (titleNode != null && titleNode.getTextContent() != null) {
+                String titleText = titleNode.getTextContent().trim();
+                if (!titleText.isEmpty()) {
+                    this.TITLE = titleText;
+                }
+            }
+            
+            // Parse width with validation
+            var widthNode = doc.getElementsByTagName("width").item(0);
+            if (widthNode != null && widthNode.getTextContent() != null) {
+                try {
+                    int parsedWidth = Integer.parseInt(widthNode.getTextContent().trim());
+                    if (parsedWidth > 40) {
+                        this.WIDTH = parsedWidth;
+                    } else {
+                        System.out.println("Width must be > 40, using default");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid width value, using default");
+                }
+            }
+            
+            // Parse height with validation
+            var heightNode = doc.getElementsByTagName("height").item(0);
+            if (heightNode != null && heightNode.getTextContent() != null) {
+                try {
+                    int parsedHeight = Integer.parseInt(heightNode.getTextContent().trim());
+                    if (parsedHeight > 40) {
+                        this.HEIGHT = parsedHeight;
+                    } else {
+                        System.out.println("Height must be > 40, using default");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid height value, using default");
+                }
+            }
+            
+            System.out.printf("Display configured: %s (%dx%d)%n", TITLE, WIDTH, HEIGHT);
+            
+        } catch (Exception e) {
+            System.err.printf("ERROR: XML Parsing Failed: %s, using default settings%n", e.getMessage());
+        }
     }
 }
