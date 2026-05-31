@@ -5,11 +5,11 @@ public class Main {
     static void main(String[] args) {
         System.out.println("LWJGL Version: "+ Version.getVersion());
 
-        DisplayManager.createDisplay();
-        while (!DisplayManager.isCloseRequested()) {
-            DisplayManager.updateDisplay();
+        DisplayManager.get().createDisplay();
+        while (!DisplayManager.get().isClosed()) {
+            DisplayManager.get().updateDisplay();
         }
-        DisplayManager.closeDisplay();
+        DisplayManager.get().closeDisplay();
     }
     
 }
