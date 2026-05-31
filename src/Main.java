@@ -1,5 +1,5 @@
 import org.lwjgl.Version;
-
+ 
 public class Main {
 
     static void main(String[] args) {
@@ -7,10 +7,15 @@ public class Main {
         DisplayManager display = DisplayManager.get();
 
         display.createDisplay();
+
+        Scene scene = new Scene(display.getWindow(), display.getWidth(), display.getHeight());
+
         while (!display.isClosed()) {
+            scene.update();
+            scene.render();
             display.updateDisplay();
         }
         display.closeDisplay();
     }
-    
+
 }
