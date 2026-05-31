@@ -1,0 +1,4 @@
+# binaries (class,etc..)
+bin
+# .jar library, heavy.
+lib
