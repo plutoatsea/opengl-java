@@ -4,13 +4,18 @@ public class Scene {
     private final Camera camera;
     private final InputHandler input;
     private final Entity ground;
+    private final Entity wall;
 
     public Scene(long window, int width, int height) {
         camera = new Camera();
         input  = new InputHandler(window);
 
         // FLAT GRASS PLANE
-        ground = new Entity(0, 0, 0, 10, 10,  0.2f, 0.7f, 0.2f);
+        ground = new Plane(0, 0, 0, 10, 10, 0.1f, 0.5f, 0.2f);
+        // ground.setRotation(90, 90); //wall
+
+        wall = new Plane(10, 5, 0, 10, 5, 0.1f, 0.1f, 0.1f);
+        wall.setRotation(90, 90);
 
         setupProjection(width, height);
     }
@@ -33,6 +38,7 @@ public class Scene {
 
         // Draw world entities
         ground.render();
+        wall.render();
     }
 
     // Sets up a basic perspective projection
