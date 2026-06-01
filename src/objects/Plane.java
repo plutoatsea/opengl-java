@@ -1,6 +1,7 @@
+package objects;
 import org.lwjgl.opengl.GL11;
 
-class Plane extends Entity{
+public class Plane extends Entity{
     private float width, depth;
     public Plane(float x, float y, float z, float width, float depth, float r, float g, float b){
         super(x,y,z,r,g,b);
@@ -8,7 +9,7 @@ class Plane extends Entity{
     }
 
     @Override
-    void render() {
+    public void render() {
         GL11.glDisable(GL11.GL_CULL_FACE);  //Make the other side not transparent
         //Rotate
         GL11.glPushMatrix();

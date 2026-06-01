@@ -1,3 +1,4 @@
+package objects;
 import java.nio.IntBuffer;
 
 import org.lwjgl.assimp.*;
@@ -54,7 +55,7 @@ public class Model extends Entity {
     }
     
     @Override
-    void render() {
+    public void render() {
         GL11.glPushMatrix();
         GL11.glTranslatef(x, y, z);
         GL11.glRotatef(yaw, 0, 1, 0);

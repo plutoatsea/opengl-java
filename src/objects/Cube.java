@@ -1,6 +1,7 @@
+package objects;
 import org.lwjgl.opengl.GL11;
 
-class Cube extends Entity {
+public class Cube extends Entity {
     private float size;
     
     public Cube(float x, float y, float z, float size, float r, float g, float b) {
@@ -9,7 +10,7 @@ class Cube extends Entity {
     }
     
     @Override
-    void render() {
+    public void render() {
         GL11.glPushMatrix();
         GL11.glTranslatef(x, y, z);
         GL11.glRotatef(yaw, 0, 1, 0);

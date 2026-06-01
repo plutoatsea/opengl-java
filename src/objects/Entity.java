@@ -1,3 +1,4 @@
+package objects;
 public abstract class Entity {
     protected float x, y, z;       // Position
     protected float r, g, b;       // Color
@@ -11,7 +12,7 @@ public abstract class Entity {
     };
 
     // Draws on screen
-    abstract void render();
+    public abstract void render();
     //Custom Rotation
     public void setRotation(float yaw, float pitch) {
         this.yaw = yaw;
