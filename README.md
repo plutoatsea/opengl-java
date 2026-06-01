@@ -7,6 +7,9 @@ javac -d bin -cp "lib/*" src\*.java
 java  --enable-native-access=ALL-UNNAMED  -cp "bin;lib/*" Main
 ```
 
+### Demo (WIP - Rendered Teddy Bear)
+![Teddy Bear](./res/img/teddy.png)
+
 ### Example Tree:
 ```sh
 .
@@ -17,20 +20,10 @@ java  --enable-native-access=ALL-UNNAMED  -cp "bin;lib/*" Main
 ├── lib
 │   ├── lwjgl-assimp-natives-windows.jar
 │   ├── lwjgl-assimp.jar
-│   ├── lwjgl-glfw-natives-windows.jar
-│   ├── lwjgl-glfw.jar
-│   ├── lwjgl-natives-windows.jar
-│   ├── lwjgl-openal-natives-windows.jar
-│   ├── lwjgl-openal.jar
-│   ├── lwjgl-opengl-natives-windows.jar
-│   ├── lwjgl-opengl.jar
-│   ├── lwjgl-stb-natives-windows.jar
-│   ├── lwjgl-stb.jar
-│   ├── lwjgl-unsafe.jar
+│   ├── *.jar ...
 │   └── lwjgl.jar
 └── src
     ├── DisplayManager.java
     └── Main.java
 
-4 directories, 19 files
 ```

@@ -1,25 +1,23 @@
+import java.util.ArrayList;
+import java.util.List;
 import org.lwjgl.opengl.GL11;
 
 public class Scene {
     private final Camera camera;
     private final InputHandler input;
-    private final Entity ground;
-    private final Entity wall;
-    private final Entity cube;
+    private List<Entity> objects;
 
     public Scene(long window, int width, int height) {
         camera = new Camera();
         input  = new InputHandler(window);
-
-        // FLAT GRASS PLANE
-        ground = new Plane(0, 0, 0, 10, 10, 0.1f, 0.5f, 0.2f);
-        // ground.setRotation(90, 90); //wall
-
-        wall = new Plane(10, 5, 0, 10, 5, 0.1f, 0.1f, 0.1f);
-        wall.setRotation(90, 90);
-
-        cube = new Cube(2, 1, 2, 1.0f, 0.9f, 0.5f, 0.0f);
-
+        objects = new ArrayList<>(List.of(
+            new Plane(0, 0, 0, 10, 10, 0.1f, 0.5f, 0.2f),
+            new Plane(10f, 5f, 0f, 10f, 5f, 0.1f, 0.1f, 0.1f),
+            new Cube(2, 1, 2, 1.0f, 0.9f, 0.5f, 0.0f),
+            new Model(2,1.75f,2,"res/models/teddy.obj",1f,1f,1f)
+        ));
+        objects.get(1).setRotation(90, 90); //Black Wall Entity
+        objects.get(3).setScale(0.01f);
         setupProjection(width, height);
     }
 
@@ -40,9 +38,7 @@ public class Scene {
         camera.applyView();
 
         // Draw world entities
-        ground.render();
-        wall.render();
-        cube.render();
+        objects.forEach(entity -> entity.render());
     }
 
     // Sets up a basic perspective projection
