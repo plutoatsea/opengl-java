@@ -5,6 +5,7 @@ public class Scene {
     private final InputHandler input;
     private final Entity ground;
     private final Entity wall;
+    private final Entity cube;
 
     public Scene(long window, int width, int height) {
         camera = new Camera();
@@ -16,6 +17,8 @@ public class Scene {
 
         wall = new Plane(10, 5, 0, 10, 5, 0.1f, 0.1f, 0.1f);
         wall.setRotation(90, 90);
+
+        cube = new Cube(2, 1, 2, 1.0f, 0.9f, 0.5f, 0.0f);
 
         setupProjection(width, height);
     }
@@ -39,6 +42,7 @@ public class Scene {
         // Draw world entities
         ground.render();
         wall.render();
+        cube.render();
     }
 
     // Sets up a basic perspective projection

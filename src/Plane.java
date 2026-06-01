@@ -2,7 +2,7 @@ import org.lwjgl.opengl.GL11;
 
 class Plane extends Entity{
     private float width, depth;
-        public Plane(float x, float y, float z, float width, float depth, float r, float g, float b){
+    public Plane(float x, float y, float z, float width, float depth, float r, float g, float b){
         super(x,y,z,r,g,b);
         this.width = width; this.depth = depth;
     }
