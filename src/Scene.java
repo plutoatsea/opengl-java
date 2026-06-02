@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.List;
 import org.lwjgl.opengl.GL11;
 
@@ -7,19 +6,20 @@ import objects.*;
 public class Scene {
     private final Camera camera;
     private final InputHandler input;
-    private List<Entity> objects;
+    private ObjectManager objm;
 
     public Scene(long window, int width, int height) {
         camera = new Camera();
         input  = new InputHandler(window);
-        objects = new ArrayList<Entity>(List.of(
+        objm = new ObjectManager();
+        objm.addAll(List.of(
             new Plane(0, 0, 0, 10, 10, 0.1f, 0.5f, 0.2f),
             new Plane(10f, 5f, 0f, 10f, 5f, 0.1f, 0.1f, 0.1f),
             new Cube(2, 1, 2, 1.0f, 0.9f, 0.5f, 0.0f),
             new Model(2,1.75f,2,"res/models/teddy.obj",1f,1f,1f)
         ));
-        objects.get(1).setRotation(90, 90); //Black Wall Entity
-        objects.get(3).setScale(0.01f);
+        objm.get(1).setRotation(90, 90); //Black Wall Entity
+        objm.get(3).setScale(0.01f);
         setupProjection(width, height);
     }
 
@@ -40,7 +40,7 @@ public class Scene {
         camera.applyView();
 
         // Draw world entities
-        objects.forEach(entity -> entity.render());
+        objm.renderAll();
     }
 
     // Sets up a basic perspective projection
